@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     [SerializeField] Paddle paddle1;
     [SerializeField] float xPush = 2f;
     [SerializeField] float yPush = 15f;
+    [SerializeField] AudioClip[] ballSounds;
 
 
     //state 
@@ -17,13 +18,18 @@ public class Ball : MonoBehaviour
     //bool 
     bool hasStarted = false;
 
+    // cached Component reference
+    AudioSource myAudioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
         // subtact the position of the ball from the paddle 
-        paddleToBallVector = transform.position - paddle1.transform.position; 
-        // Update is called once per frame
+        paddleToBallVector = transform.position - paddle1.transform.position;
+        myAudioSource = GetComponent<AudioSource>();
     }
+    // Update is called once per frame
     void Update()
     {   
         if(!hasStarted)
@@ -52,9 +58,12 @@ public class Ball : MonoBehaviour
     {
         if (hasStarted)
         {
-            GetComponent<AudioSource>().Play();
+           AudioClip clip = ballSounds[UnityEngine.Random.Range(0, ballSounds.Length)];
+           myAudioSource.PlayOneShot(clip);
         }
         
     }
+    
 
-}
+
+}//class 

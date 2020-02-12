@@ -9,9 +9,33 @@ public class GameStatus : MonoBehaviour
     [Range(0.1f, 10f)] [SerializeField] float gameSpeed = 1f;
     [SerializeField] int pointsPerBlock = 83;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] bool isAutoPlayEnabled;  
 
     // state variables 
     [SerializeField] int currentScore = 0;
+
+
+    private void Awake()
+    {
+        // singleton pattern method, essentially providing only one game load, 
+        //if another is provided it should be deleted and 
+        //the original should stay 
+        //store gamestatus objects 
+        int gameStatusCount = FindObjectsOfType<GameStatus>().Length;
+        if (gameStatusCount > 1)
+        {
+            //include in every singleton pattern 
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+          
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            
+        }
+    }
+
 
     private void Start()
     {
@@ -30,5 +54,14 @@ public class GameStatus : MonoBehaviour
         scoreText.text = currentScore.ToString();
     }
 
+    public void ResetGame()
+    {
+        Destroy(gameObject);
+    }
+
+    public bool IsAutoPlayEnabled()
+    {
+        return isAutoPlayEnabled; 
+    }
 
 }//class

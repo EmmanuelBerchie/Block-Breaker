@@ -19,14 +19,24 @@ public class Paddle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // find mouse position and then set it to within the screen width 
-        float mousePosInUnits = Input.mousePosition.x / Screen.width * screenWidthInUnits;
         // Vector 2 is a compact way of storing x and y componenents, do not need y because it is a 2d game
         Vector2 paddlePos = new Vector2(transform.position.x, transform.position.y);
-        paddlePos.x = Mathf.Clamp(mousePosInUnits, screenMin, screenMax);
+        paddlePos.x = Mathf.Clamp(GetXpos(), screenMin, screenMax);
         transform.position = paddlePos;
     }
-        
+    
+    private float GetXpos()
+    {
+        if(FindObjectOfType<GameStatus>().IsAutoPlayEnabled())
+        {
+            return FindObjectOfType<Ball>().transform.position.x; 
+        }
+        else
+        {
+            return Input.mousePosition.x / Screen.width * screenWidthInUnits;
+
+        }
+    }
 
     }
 
